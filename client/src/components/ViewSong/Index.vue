@@ -29,11 +29,12 @@ import SongMetadata from './SongMetadata'
 import YouTube from './YouTube'
 import Lyrics from './Lyrics'
 import Tab from './Tab'
-import Panel from '@/components/Panel'
 export default {
   data () {
     return {
-      song: null
+      song: {
+        youtubeId: null
+      }
     }
   },
   async mounted () {
@@ -41,7 +42,6 @@ export default {
     this.song = (await SongsService.show(songId)).data
   },
   components: {
-    Panel,
     SongMetadata,
     YouTube,
     Lyrics,

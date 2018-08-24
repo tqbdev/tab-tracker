@@ -15,7 +15,7 @@
             v-model="password"
           ></v-text-field>
         </form>
-        <div class="error" v-html="error"></div>
+        <div class="danger-alert" v-html="error"></div>
         <v-btn
           dark
           class="cyan"
@@ -29,7 +29,6 @@
 
 <script>
 import AuthencationService from '@/services/AuthencationService'
-import Panel from '@/components/Panel'
 export default {
   name: 'Login',
   data () {
@@ -37,11 +36,6 @@ export default {
       email: '',
       password: '',
       error: null
-    }
-  },
-  watch: {
-    email (value) {
-      console.log('Email has changed value', value)
     }
   },
   methods: {
@@ -54,24 +48,16 @@ export default {
 
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
+        this.$router.push({
+          name: 'songs'
+        })
       } catch (error) {
         this.error = error.response.data.error
       }
     }
-  },
-  mounted () {},
-  components: {
-    Panel
   }
 }
 </script>
 
 <style scoped>
-input {
-  margin: 10px;
-}
-
-.error {
-  color: red;
-}
 </style>
