@@ -24,11 +24,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import SongsService from '@/services/SongsService'
+import SongsHistoryService from '@/services/SongsHistoryService'
+
 import SongMetadata from './SongMetadata'
 import YouTube from './YouTube'
 import Lyrics from './Lyrics'
 import Tab from './Tab'
+
 export default {
   data () {
     return {
@@ -37,9 +41,22 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+      'isUserLoggedIn',
+      'user',
+      'route'
+    ])
+  },
   async mounted () {
-    const songId = this.$store.state.route.params.songId
+    const songId = this.route.params.songId
     this.song = (await SongsService.show(songId)).data
+
+    if (this.isUserLoggedIn) {
+      SongsHistoryService.post({
+        songId: songId
+      })
+    }
   },
   components: {
     SongMetadata,
